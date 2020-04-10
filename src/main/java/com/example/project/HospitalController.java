@@ -12,44 +12,39 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
 @RestController
 @RequestMapping("/test/")
 public class HospitalController {
 
-    @Autowired
-    private HospitalService hospitalService;
-
-
-
-public @ResponseBody Hospital getHospital(@PathVariable("id") int id) throws Exception {
-
-        return null;
-    }
-
-
-public @ResponseBody List<Hospital> getAllHospitals() throws Exception {
-		return null;
-    }
-
-
-
-public ResponseEntity<String> addHospital(@RequestBody Hospital hospital  ) {
-
-	return null;
-}
-
-
-public ResponseEntity<String> updateHospital(@RequestBody Hospital hospital) {
+	@Autowired
+	private HospitalService hospitalService;
 	
-	return null;
-}
+	@RequestMapping(value = "hospitals/{id}", method = RequestMethod.GET)
+	public @ResponseBody Hospital getHospital(@PathVariable("id") int id) throws Exception {
+		return this.hospitalService.getHospital(id);
+	}
 
+	@RequestMapping(value = "hospitals/", method = RequestMethod.GET)
+	public @ResponseBody List<Hospital> getAllHospitals() throws Exception {
+		return this.hospitalService.getAllHospitals();
+	}
 
-public ResponseEntity<String> deleteHospital(@RequestBody Hospital hospital) {
+	@RequestMapping(value = "hospitals/", method = RequestMethod.POST)
+	public ResponseEntity<String> addHospital(@RequestBody Hospital hospital) {
+		this.hospitalService.addHospitals(hospital);
+		return ResponseEntity.ok().body("Hospital Added Successfully");
+	}
+	
+	@RequestMapping(value="hospitals/",method = RequestMethod.PUT)
+	public ResponseEntity<String> updateHospitals(@RequestBody Hospital hospital) {
+		this.hospitalService.updateHospitals(hospital);
+		return ResponseEntity.ok().body("Hospital Updated Successfully");
+	}
 
-	return null;
-}
+	@RequestMapping(value="hospitals/",method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteHospitals(@RequestBody Hospital hospital){
+		this.hospitalService.deleteHospitals(hospital);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
 
 }
